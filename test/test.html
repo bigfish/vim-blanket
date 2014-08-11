@@ -34,15 +34,26 @@
     </script>
 
     <!-- Include anything you want to test -->
-    <script src="../js/wombat.js" data-cover type="text/javascript" charset="utf-8"></script>
-    <script src="../js/apple.js" data-cover type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      var qs = location.search.substring(1);
+      var params = qs.split('=');
+      if (params[0] == 'spec') {
+        var spec = decodeURIComponent(params[1]);
+        document.write('<script src="../js/' + spec + '.js" data-cover ><' + '/script>');
+        document.write('<script src="spec/' + spec + '.js" ><'+'/script>');
+      } else {
+        console.log('no spec querystring parameter given to test runner');
+      }
+
+    </script>
+    
 
     <!-- Spec files -->
-    <script src="spec/wombat.js" type="text/javascript" charset="utf-8"></script>
-    <script src="spec/apple.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="spec/wombat.js" ></script>-->
 
     <!-- run mocha -->
     <script type="text/javascript" charset="utf-8">
+
     if (window.PHANTOMJS) {
         blanket.options("reporter", "reporter/json-coverage.js");
     } else {

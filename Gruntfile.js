@@ -27,13 +27,14 @@ module.exports = function(grunt) {
     },
      blanket_mocha: {
         test: {
-            src: ['test/test.html'],
+            src: [],
             options: {
+                urls: ['http://localhost:3000/test/test.html?spec='],
                 run: true,
                 log: true,
                 threshold: 0,
                 mocha: {
-                    grep: 'wombat'
+                    //grep: 'wombat'
                 }
             }
         }
@@ -48,7 +49,20 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('spec', 'test only matching spec', function (n) {
       var spec = grunt.option('spec');
-      grunt.config('mocha.test.options.mocha.grep', spec);
+      grunt.verbose.writeln('spec=' + spec);
+      //grunt.config('mocha.test.options.mocha.grep', spec);
+      //grunt.config('blanket_mocha.test.options.mocha.grep', spec);
+      //var runner = grunt.config('blanket_mocha.test.src')[0];
+      //runner += '?spec=' + spec;
+      //grunt.config('blanket_mocha.test.src', ['foobar']);
+      var url = grunt.config('blanket_mocha.test.options.urls')[0];
+      grunt.config.set('blanket_mocha.test.options.urls', [url + spec]);
+      console.log()
+      //grunt.config.set('blanket_mocha.test.src', ['test/test.html?spec=' + spec]);
+      //grunt.config.set('blanket_mocha.test.urls', ['test/test.html?foo=bar']);
+      //grunt.verbose.writeln(grunt.config('blanket_mocha.test.urls')[0]);
+      //grunt.config('blanket_mocha.test.urls', ['test/test.html?spec=' + spec]);
+      //grunt.config('mocha.test.options.mocha.spec', spec);
       grunt.task.run('blanket_mocha');
   });
 
